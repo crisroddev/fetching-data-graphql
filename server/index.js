@@ -5,6 +5,7 @@ import { GraphQLServer } from 'graphql-yoga';
 const typeDefs = `
     type Query {
         hello{name:String}: String!
+        gerPerson(id: Int!): Person
     }
 
     type Film {
@@ -31,7 +32,11 @@ const typeDefs = `
 
 const resolvers = {
     Query: {
-        hello: (_, { name } ) => `Hello ${name || "World"}`
+        hello: (_, { name } ) => `Hello ${name || "World"}`,
+        getPerson: async (_, { id }) => {
+            const response = await fetch(`https://swapi.co/api/people/${ id }`);
+            return response.json()
+        },
     }
 };
 
