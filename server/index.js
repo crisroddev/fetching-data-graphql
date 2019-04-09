@@ -31,6 +31,16 @@ const typeDefs = `
 `;
 
 const resolvers = {
+    Person: {
+        films: (parent) => {
+            const promises = parent.films.map(async url => {
+                const response = await fetch(url);
+                return response.json();
+            });
+            return Promise.all(promises);
+        }
+    },
+
     Query: {
         hello: (_, { name } ) => `Hello ${name || "World"}`,
         getPerson: async (_, { id }) => {
